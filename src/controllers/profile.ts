@@ -1,5 +1,3 @@
-import { Request, Response } from "express"
+import { Request, Response } from "express";
 
-const GetUserProfile = (req: Request, res: Response) => {
-
-}
+const GetUserProfile = (req: Request, res: Response) => {};
