@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { db } from "@src/app";
 
 
-export const GetLifetimeLeaderboard = async (req: Request, res: Response) => {
+export const GetLifetimeLeaderboard = async (_req: Request, res: Response) => {
     try {
         const leaderboard = await db.user.findMany({
             select: {
@@ -24,7 +24,7 @@ export const GetLifetimeLeaderboard = async (req: Request, res: Response) => {
     }
 };
 
-export const GetWeeklyLeaderboard = async(req: Request, res: Response) => {
+export const GetWeeklyLeaderboard = async(_req: Request, res: Response) => {
     try {
         const leaderboard = await db.points.groupBy({
             by: ['userId'],
@@ -76,7 +76,7 @@ export const GetWeeklyLeaderboard = async(req: Request, res: Response) => {
 
 };
 
-export const GetMonthlyLeaderboard =async (req: Request, res: Response) => {
+export const GetMonthlyLeaderboard =async (_req: Request, res: Response) => {
     try {
         const leaderboard = await db.points.groupBy({
             by: ['userId'],
