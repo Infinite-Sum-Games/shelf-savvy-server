@@ -17,3 +17,6 @@ yarn-error.log*
 
 # TSC cache
 *.tsbuildinfo
+
+# pem files
+*.pem
