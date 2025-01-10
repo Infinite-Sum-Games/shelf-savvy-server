@@ -3,7 +3,7 @@ export const pointMap = {
   donation: {
     loaf: 100,
     prince: 200,
-    king: 300
+    king: 300,
   },
   // Points for referring the app to friends
   referral: 50,
@@ -17,4 +17,4 @@ export const pointMap = {
   weeklyStreak: 50,
   // Points for monthly streak
   monthlyStreak: 100,
-}
+};

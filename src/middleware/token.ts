@@ -23,9 +23,16 @@ const tempToken = async (email: string) => {
 
 const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
   const tokenHeader: string = req.headers.authorization as string;
-  const token: string = tokenHeader.split(" ")[1];
+  let token: string | null = null;
+  try {
+    token = tokenHeader.split(" ")[1];
+  } catch (error) {
+    res.status(401).json({
+      message: "UNAUTHORIZED REQUEST: Token Missing",
+    });
+  }
 
-  if (tokenHeader == null || token == null) {
+  if (tokenHeader === null || token === null) {
     res.status(401).json({
       message: "UNAUTHORIZED REQUEST: Token Missing",
     });

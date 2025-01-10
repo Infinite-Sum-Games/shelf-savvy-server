@@ -31,7 +31,7 @@ export const EnterReferralHandler = async (req: Request, res: Response) => {
           wasReferred: validBody.data.referralCode,
           totalPoints: {
             increment: pointMap.referral,
-          }
+          },
         },
         where: {
           email: validBody.data.email,
@@ -51,7 +51,7 @@ export const EnterReferralHandler = async (req: Request, res: Response) => {
         data: {
           userId: updateJoinee.id,
           point: pointMap.referral,
-        }
+        },
       });
 
       res.status(200).json({

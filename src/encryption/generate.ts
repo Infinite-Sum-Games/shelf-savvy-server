@@ -1,7 +1,7 @@
 import { writeFileSync } from "fs";
 import { generateKeyPairSync } from "crypto";
 
-const generateKey = () => {
+export const generateKey = () => {
   const { publicKey, privateKey } = generateKeyPairSync("ed25519", {
     modulusLength: 2048,
     publicKeyEncoding: {
@@ -14,8 +14,6 @@ const generateKey = () => {
     },
   });
 
-  writeFileSync("./public_key.pem", publicKey.toString());
-  writeFileSync("./private_key.pem", privateKey.toString());
+  writeFileSync("src/encryption/public_key.pem", publicKey.toString());
+  writeFileSync("src/encryption/private_key.pem", privateKey.toString());
 };
-
-generateKey();

@@ -68,11 +68,6 @@ export const VBankRegistration = z.object({
     .regex(/^[a-zA-Z0-9_.]+$/),
   password: z.string().min(8).max(30).regex(new RegExp("^[a-zA-Z0-9_]*$")),
   email: z.string().trim().email(),
-  otp: z
-    .string()
-    .trim()
-    .length(6)
-    .regex(/^[0-9]+$/),
 });
 
 export const VBankRegistrationOTP = z.object({
