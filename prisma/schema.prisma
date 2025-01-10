@@ -62,7 +62,7 @@ model Achivements {
   id        Int              @id @default(autoincrement())
   userId    String
   badge     AchivementBadges
-  createdAt DateTime
+  createdAt DateTime?        @default(now())
 }
 
 enum AchivementBadges {
@@ -126,10 +126,10 @@ model FoodDonation {
 }
 
 model Points {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   userId    String
   point     Int
-  createdAt DateTime
+  createdAt DateTime? @default(now())
 
   user User @relation(fields: [userId], references: [id])
 }
