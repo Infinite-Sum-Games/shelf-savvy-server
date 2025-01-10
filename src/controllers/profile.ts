@@ -3,7 +3,7 @@ import { db } from "@src/app";
 import z from "zod";
 
 export const GetMyProfileHandler = async (req: Request, res: Response) => {
-  const myEmail = z.string().trim().email().safeParse(req.headers.email);
+  const myEmail = z.string().trim().email().safeParse(req.body.email);
   if (!myEmail.success) {
     res.status(400).json({
       maessage: "Invalid email provided",
@@ -77,7 +77,7 @@ export const GetMyProfileHandler = async (req: Request, res: Response) => {
 };
 
 export const GetMyBankProfileHandler = async (req: Request, res: Response) => {
-  const bankEmail = z.string().trim().email().safeParse(req.headers.email);
+  const bankEmail = z.string().trim().email().safeParse(req.body.email);
   if (!bankEmail.success) {
     res.status(400).json({
       message: "Invalid email provided",
@@ -125,7 +125,7 @@ export const GetMyBankProfileHandler = async (req: Request, res: Response) => {
 };
 
 export const VisitProfileHandler = async (req: Request, res: Response) => {
-  const userName = z.string().trim().min(3).max(20).safeParse(req.headers.username);
+  const userName = z.string().trim().min(3).max(20).safeParse(req.body.username);
   if (!userName.success) {
     res.status(400).json({
       message: "Invalid username provided",

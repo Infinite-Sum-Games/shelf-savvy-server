@@ -4,10 +4,10 @@ import { Router } from "express";
 
 const router = Router();
 
-router.get("/user", authMiddleware, GetMyProfileHandler);
+router.post("/user", authMiddleware, GetMyProfileHandler);
 
-router.get("/bank", authMiddleware, GetMyBankProfileHandler);
+router.post("/bank", authMiddleware, GetMyBankProfileHandler);
 
-router.get("/user/visit", authMiddleware, VisitProfileHandler);
+router.post("/user/visit", authMiddleware, VisitProfileHandler);
 
 export { router as ProfileRouter };

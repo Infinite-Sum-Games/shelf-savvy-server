@@ -4,8 +4,8 @@ import { Router } from "express";
 
 const router = Router();
 
-router.get("/weekly", authMiddleware, GetWeeklyLeaderboard);
-router.get("/montly", authMiddleware, GetMonthlyLeaderboard);
-router.get("/lifetime", authMiddleware, GetLifetimeLeaderboard);
+router.post("/weekly", authMiddleware, GetWeeklyLeaderboard);
+router.post("/montly", authMiddleware, GetMonthlyLeaderboard);
+router.post("/lifetime", authMiddleware, GetLifetimeLeaderboard);
 
 export { router as LeaderboardRouter };
