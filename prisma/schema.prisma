@@ -50,6 +50,17 @@ model User {
   Recipe            Recipe[]
 }
 
+model Registration {
+  id        Int      @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String
+  username  String
+  password  String
+  otp       String
+  expiryAt  DateTime
+}
+
 model Referrals {
   id           Int    @id @default(autoincrement())
   joineeId     String
