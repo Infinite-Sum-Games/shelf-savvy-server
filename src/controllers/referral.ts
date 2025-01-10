@@ -1,5 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { db } from "@src/app";
+import { pointMap } from "@src/config/points";
 import { CustomError } from "@src/middleware/errors";
 import { VEnterReferral } from "@src/types/referral";
 import { Request, Response } from "express";
@@ -28,12 +29,16 @@ export const EnterReferralHandler = async (req: Request, res: Response) => {
       const updateJoinee = await tx.user.update({
         data: {
           wasReferred: validBody.data.referralCode,
+          totalPoints: {
+            increment: pointMap.referral,
+          }
         },
         where: {
           email: validBody.data.email,
         },
       });
 
+      // Add in the referral table
       await tx.referrals.create({
         data: {
           joineeId: updateJoinee.id,
@@ -41,10 +46,18 @@ export const EnterReferralHandler = async (req: Request, res: Response) => {
         },
       });
 
-      // TODO: Add points
-    });
-    res.status(200).json({
-      message: "Referral accepted",
+      // Add in the points table
+      await tx.points.create({
+        data: {
+          userId: updateJoinee.id,
+          point: pointMap.referral,
+        }
+      });
+
+      res.status(200).json({
+        message: "Referral accepted",
+        totalPoints: updateJoinee.totalPoints,
+      });
     });
     return;
   } catch (error) {
