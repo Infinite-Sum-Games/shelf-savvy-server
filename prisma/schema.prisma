@@ -36,9 +36,9 @@ model User {
   lastName          String
   username          String
   email             String           @unique
-  profilePictureURL String
+  profilePictureURL String?
   password          String?
-  providerId        String           @unique
+  providerId        String?
   myReferralCode    String           @unique
   wasReferred       String?
   streak            Int              @default(1)
