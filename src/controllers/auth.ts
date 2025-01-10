@@ -221,8 +221,6 @@ export const userRegistrationOTPVerifyHandler = async (req: Request, res: Respon
   }
 };
 
-export const userGoogleOAuthHandler = (_req: Request, _res: Response) => { };
-
 export const bankRegisterHandler = async (req: Request, res: Response) => {
   const validBody = VBankRegistration.safeParse(req.body);
   if (!validBody.success) {
