@@ -8,6 +8,6 @@ router.get("/user", authMiddleware, GetMyProfileHandler);
 
 router.get("/bank", authMiddleware, GetMyBankProfileHandler);
 
-router.get("/user/visit", authMiddleware, VisitProfileHandler)
+router.get("/user/visit", authMiddleware, VisitProfileHandler);
 
 export { router as ProfileRouter };

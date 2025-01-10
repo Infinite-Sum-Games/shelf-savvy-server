@@ -4,7 +4,7 @@ const PostRecipeHandler = (req: Request, res: Response) => {};
 
 const RefreshRecipeHandler = (req: Request, res: Response) => {};
 
-const GetNewRecipeHandler = (req: Request, res: Response) => {};
+const CreateNewRecipeHandler = (req: Request, res: Response) => {};
 
 const EditRecipeHandler = (req: Request, res: Response) => {};
 

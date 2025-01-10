@@ -97,7 +97,6 @@ export const VCheckBankUsername = z.object({
     .regex(/^[a-zA-Z0-9_.]+$/),
 });
 
-
 export const VCheckUsername = z.object({
   username: z
     .string()

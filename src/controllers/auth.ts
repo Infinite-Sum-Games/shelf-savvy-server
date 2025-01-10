@@ -7,7 +7,7 @@ import {
   VBankRegistration,
   VBankRegistrationOTP,
   VCheckUsername,
-  VCheckBankUsername
+  VCheckBankUsername,
 } from "../types/auth";
 
 export const userRegisterHandler = (req: Request, res: Response) => {
@@ -40,7 +40,7 @@ export const userRegistrationOTPVerifyHandler = (req: Request, res: Response) =>
   }
 };
 
-export const userGoogleOAuthHandler = (_req: Request, _res: Response) => { };
+export const userGoogleOAuthHandler = (_req: Request, _res: Response) => {};
 
 export const bankRegisterHandler = (req: Request, res: Response) => {
   const validBody = VBankRegistration.safeParse(req.body);

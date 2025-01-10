@@ -8,7 +8,7 @@ export const EnterReferralHandler = async (req: Request, res: Response) => {
   const validBody = VEnterReferral.safeParse(req.body);
   if (!validBody.success) {
     res.status(400).json({
-      message: "Bad Request"
+      message: "Bad Request",
     });
     return;
   }
@@ -17,8 +17,8 @@ export const EnterReferralHandler = async (req: Request, res: Response) => {
     await db.$transaction(async (tx: Prisma.TransactionClient) => {
       const check = tx.user.findFirst({
         where: {
-          myReferralCode: validBody.data.referralCode
-        }
+          myReferralCode: validBody.data.referralCode,
+        },
       });
       if (!check) {
         throw new CustomError(404, "Invalid Referral Code");
@@ -31,20 +31,20 @@ export const EnterReferralHandler = async (req: Request, res: Response) => {
         },
         where: {
           email: validBody.data.email,
-        }
+        },
       });
 
       await tx.referrals.create({
         data: {
           joineeId: updateJoinee.id,
           referralCode: validBody.data.referralCode,
-        }
+        },
       });
 
       // TODO: Add points
     });
     res.status(200).json({
-      message: "Referral accepted"
+      message: "Referral accepted",
     });
     return;
   } catch (error) {
@@ -55,7 +55,7 @@ export const EnterReferralHandler = async (req: Request, res: Response) => {
       return;
     }
     res.status(500).json({
-      message: "Internal server error! Please try again later"
+      message: "Internal server error! Please try again later",
     });
     return;
   }

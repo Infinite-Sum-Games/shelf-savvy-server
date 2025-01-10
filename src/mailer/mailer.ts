@@ -12,7 +12,7 @@ const mailPass = process.env.EMAIL_APP_KEY as string;
 // To be generalized later
 const subjects = {
   userRegistration: "Shelf-Savvy Registration OTP",
-  bankRegistration: "Shelf-Savvy Bank Registration OTP"
+  bankRegistration: "Shelf-Savvy Bank Registration OTP",
 };
 
 const transporter = nodemailer.createTransport({

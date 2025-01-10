@@ -18,4 +18,4 @@ const generateKey = () => {
   writeFileSync("./private_key.pem", privateKey.toString());
 };
 
-export default generateKey;
+generateKey();
