@@ -109,13 +109,13 @@ model CouponDispatch {
 }
 
 model Inventory {
-  id       Int     @id @default(autoincrement())
+  id       String  @id @default(cuid())
   itemName String
   barcode  String?
   qty      Int
-  userId   String
+  email    String
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [email], references: [email])
 }
 
 model Recipe {

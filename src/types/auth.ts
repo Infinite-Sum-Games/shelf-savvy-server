@@ -24,7 +24,7 @@ export const VUserRegistration = z.object({
     .string()
     .trim()
     .min(8)
-    .max(30)
+    .max(100)
     .regex(/^[a-zA-Z0-9]*$/),
 });
 
@@ -34,7 +34,7 @@ export const VUserLogin = z.object({
     .trim()
     .min(5)
     .regex(/^[a-zA-Z0-9_.]+$/),
-  password: z.string().min(8).max(30).regex(new RegExp("^[a-zA-Z0-9_]*$")),
+  password: z.string().min(8).max(100).regex(new RegExp("^[a-zA-Z0-9_]*$")),
 });
 
 export const VUserRegistrationOTP = z.object({
@@ -57,7 +57,7 @@ export const VBankLogin = z.object({
     .trim()
     .min(5)
     .regex(/^[a-zA-Z0-9_.]+$/),
-  password: z.string().min(8).max(30).regex(new RegExp("^[a-zA-Z0-9_]*$")),
+  password: z.string().min(8).max(100).regex(new RegExp("^[a-zA-Z0-9_]*$")),
 });
 
 export const VBankRegistration = z.object({
@@ -66,7 +66,7 @@ export const VBankRegistration = z.object({
     .trim()
     .min(5)
     .regex(/^[a-zA-Z0-9_.]+$/),
-  password: z.string().min(8).max(30).regex(new RegExp("^[a-zA-Z0-9_]*$")),
+  password: z.string().min(8).max(100).regex(new RegExp("^[a-zA-Z0-9_]*$")),
   email: z.string().trim().email(),
 });
 

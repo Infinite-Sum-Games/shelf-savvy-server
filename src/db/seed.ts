@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { faker } from "@faker-js/faker";
 import { AchivementBadges } from "@prisma/client";
+import { newHash } from "@src/encryption/hash";
 
 const prisma = new PrismaClient();
 
@@ -218,7 +219,7 @@ async function main() {
       username: faker.internet.username(),
       email: faker.internet.email(),
       profilePictureURL: faker.image.url(),
-      password: faker.internet.password(),
+      password: newHash(newHash(faker.internet.password())),
       providerId: faker.number.int({ min: 100000, max: 999999 }).toString(),
       myReferralCode: faker.number.int({ min: 100000, max: 999999 }).toString(),
       wasReferred: faker.helpers.arrayElement(["yes", null]),

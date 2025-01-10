@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import { db } from "@src/app";
 import z from "zod";
 
-
 export const GetMyProfileHandler = async (req: Request, res: Response) => {
   const myEmail = z.string().trim().email().safeParse(req.headers.email);
   if (!myEmail.success) {
@@ -125,7 +124,6 @@ export const GetMyBankProfileHandler = async (req: Request, res: Response) => {
   }
 };
 
-// TODO: If time permits
 export const VisitProfileHandler = async (req: Request, res: Response) => {
   const userName = z.string().trim().min(3).max(20).safeParse(req.headers.username);
   if (!userName.success) {
