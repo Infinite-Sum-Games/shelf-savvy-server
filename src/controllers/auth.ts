@@ -149,6 +149,7 @@ export const userLoginHandler = async (req: Request, res: Response) => {
       firstName: user.firstName,
       lastName: user.lastName,
       profilePictureURL: user.profilePictureURL,
+      email: user.email,
     });
     return;
   } catch (error) {

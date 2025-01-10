@@ -30,6 +30,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
     res.status(401).json({
       message: "UNAUTHORIZED REQUEST: Token Missing",
     });
+    return;
   }
 
   if (tokenHeader === null || token === null) {
