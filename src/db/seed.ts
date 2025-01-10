@@ -204,6 +204,7 @@ const users: {
   myReferralCode: string;
   wasReferred: string | null;
   streak: number;
+  totalPoints: number;
 }[] = [];
 
 let createdUsers: any[] = [];
@@ -222,6 +223,7 @@ async function main() {
       myReferralCode: faker.number.int({ min: 100000, max: 999999 }).toString(),
       wasReferred: faker.helpers.arrayElement(["yes", null]),
       streak: faker.number.int({ min: 0, max: 100 }),
+      totalPoints: faker.number.int({ min: 0, max: 100 }),
     });
   }
 
