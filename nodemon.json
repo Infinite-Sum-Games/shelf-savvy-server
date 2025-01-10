@@ -1,14 +1,7 @@
 {
-  "watch": [
-    "src"
-  ],
+  "watch": ["src"],
   "ext": ".ts, .js ,.json",
-  "ignore": [
-    "node_moduls",
-    "src/**/*.spec.ts",
-    "coverage",
-    "dist"
-  ],
+  "ignore": ["node_moduls", "src/**/*.spec.ts", "coverage", "dist"],
   "exec": "tsx src/app.ts",
   "env": {
     "NODE_ENV": "dev"
