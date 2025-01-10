@@ -47,6 +47,7 @@ model User {
   CouponDispatch    CouponDispatch[]
   FoodDonation      FoodDonation[]
   Points            Points[]
+  Recipe            Recipe[]
 }
 
 model Referrals {
@@ -103,10 +104,13 @@ model Inventory {
 
 model Recipe {
   id          Int      @id @default(autoincrement())
+  userId      String
   title       String
   ingredients String[]
   content     String
   likes       Int      @default(0)
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 model FoodDonation {

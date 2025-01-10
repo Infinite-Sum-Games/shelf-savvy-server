@@ -9,9 +9,7 @@
     "baseUrl": ".",
     "moduleResolution": "node",
     "paths": {
-      "@src/*": [
-        "src/*"
-      ]
+      "@src/*": ["src/*"]
     },
     "resolveJsonModule": true,
     "removeComments": true,
@@ -33,9 +31,7 @@
     "**/*.spec.ts", // Exclude specifications
     "**/*.test.ts" // Exclude test files
   ],
-  "include": [
-    "src/**/*"
-  ],
+  "include": ["src/**/*"],
   "tsc-alias": {
     "resolveFullPaths": true,
     "verbose": false
