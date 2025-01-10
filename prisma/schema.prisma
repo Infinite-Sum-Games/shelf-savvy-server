@@ -42,12 +42,15 @@ model User {
   myReferralCode    String           @unique
   wasReferred       String?
   streak            Int              @default(1)
+  lastCheckIn       DateTime         @default(now())
+  totalPoints       Int              @default(0)
   Inventory         Inventory[]
   Referrals         Referrals[]
   CouponDispatch    CouponDispatch[]
   FoodDonation      FoodDonation[]
   Points            Points[]
   Recipe            Recipe[]
+  Achivements       Achivements[]
 }
 
 model Registration {
@@ -74,6 +77,8 @@ model Achivements {
   userId    String
   badge     AchivementBadges
   createdAt DateTime?        @default(now())
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 enum AchivementBadges {
