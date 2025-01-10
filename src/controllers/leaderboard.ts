@@ -1,11 +1,10 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { db } from "@src/app";
 
-const prisma = new PrismaClient();
 
-export const GetLifetimeLeaderboard = (req: Request, res: Response) => {
+export const GetLifetimeLeaderboard = async (req: Request, res: Response) => {
     try {
-        const leaderboard = prisma.user.findMany({
+        const leaderboard = await db.user.findMany({
             select: {
                 username: true,
                 totalPoints: true,
@@ -25,9 +24,9 @@ export const GetLifetimeLeaderboard = (req: Request, res: Response) => {
     }
 };
 
-export const GetWeeklyLeaderboard = (req: Request, res: Response) => {
+export const GetWeeklyLeaderboard = async(req: Request, res: Response) => {
     try {
-        const leaderboard = prisma.points.groupBy({
+        const leaderboard = await db.points.groupBy({
             by: ['userId'],
             where: {
                 createdAt: {
@@ -45,7 +44,28 @@ export const GetWeeklyLeaderboard = (req: Request, res: Response) => {
             take: 100,
         });
 
-        res.status(200).json(leaderboard);
+        const userIds = leaderboard.map(item => item.userId);
+
+        const users = await db.user.findMany({
+            where: {
+                id: { in: userIds },
+            },
+            select: {
+                id: true,
+                username: true,
+            },
+        });
+
+        // Merge usernames with leaderboard data
+        const enrichedLeaderboard = leaderboard.map(entry => {
+            const user = users.find(u => u.id === entry.userId);
+            return {
+                ...entry,
+                username: user?.username || "Unknown",
+            };
+        });
+
+        res.status(200).json(enrichedLeaderboard);
         return;
     }
 
@@ -56,9 +76,9 @@ export const GetWeeklyLeaderboard = (req: Request, res: Response) => {
 
 };
 
-export const GetMonthlyLeaderboard = (req: Request, res: Response) => {
+export const GetMonthlyLeaderboard =async (req: Request, res: Response) => {
     try {
-        const leaderboard = prisma.points.groupBy({
+        const leaderboard = await db.points.groupBy({
             by: ['userId'],
             where: {
                 createdAt: {
@@ -76,7 +96,28 @@ export const GetMonthlyLeaderboard = (req: Request, res: Response) => {
             take: 100,
         });
 
-        res.status(200).json(leaderboard);
+        const userIds = leaderboard.map(item => item.userId);
+
+        const users = await db.user.findMany({
+            where: {
+                id: { in: userIds },
+            },
+            select: {
+                id: true,
+                username: true,
+            },
+        });
+
+        // Merge usernames with leaderboard data
+        const enrichedLeaderboard = leaderboard.map(entry => {
+            const user = users.find(u => u.id === entry.userId);
+            return {
+                ...entry,
+                username: user?.username || "Unknown",
+            };
+        });
+
+        res.status(200).json(enrichedLeaderboard);
         return;
     }
     catch(error) {

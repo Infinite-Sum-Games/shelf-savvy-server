@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { db } from "@src/app";
 import z from "zod";
 
-const prisma = new PrismaClient();
 
 export const GetMyProfileHandler = async (req: Request, res: Response) => {
   const myEmail = z.string().trim().email().safeParse(req.body.email);
@@ -14,7 +13,7 @@ export const GetMyProfileHandler = async (req: Request, res: Response) => {
   }
 
   try {
-    const myProfile = await prisma.user.findUnique({
+    const myProfile = await db.user.findUnique({
       where: {
         email: myEmail.data,
       },
@@ -88,9 +87,9 @@ export const GetMyBankProfileHandler = async (req: Request, res: Response) => {
   }
 
   try {
-    const bankProfile = await prisma.bank.findUnique({
+    const bankProfile = await db.bank.findUnique({
       where: {
-        email: bankEmail,
+        email: bankEmail.data,
       },
       select: {
         bankName: true,
@@ -137,7 +136,7 @@ export const VisitProfileHandler = async (req: Request, res: Response) => {
   }
 
   try {
-    const userProfile = await prisma.user.findUnique({
+    const userProfile = await db.user.findUnique({
       where: {
         username: userName.data,
       },

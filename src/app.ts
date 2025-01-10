@@ -3,7 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import { DonationsRouter } from "./routes/donations";
 import { AuthRouter } from "./routes/auth";
-// import { LeaderboardRouter } from "./routes/leaderboard";
+import { LeaderboardRouter } from "./routes/leaderboard";
 import { ReferralRouter } from "./routes/referral";
 import { RecipeRouter } from "./routes/recipe";
 import { ProfileRouter } from "./routes/profile";
@@ -29,7 +29,7 @@ app.get("/api/test", (_req: Request, res: Response) => {
 app.use("/api/auth", AuthRouter);
 app.use("/api/donations", DonationsRouter);
 app.use("/api/referral", ReferralRouter);
-// app.use("/api/leaderboard", LeaderboardRouter);
+app.use("/api/leaderboard", LeaderboardRouter);
 app.use("/api/recipe", RecipeRouter);
 app.use("/api/profile", ProfileRouter);
 
