@@ -1,4 +1,4 @@
-const HostOTPTemplate = (bankname: string, otp: string) => {
+const BankOTPTemplate = (bankname: string, otp: string) => {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -82,4 +82,4 @@ const HostOTPTemplate = (bankname: string, otp: string) => {
 `;
 };
 
-export default HostOTPTemplate;
+export default BankOTPTemplate;
