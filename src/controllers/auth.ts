@@ -12,6 +12,11 @@ import {
 import { db } from "@src/app";
 import { Prisma } from "@prisma/client";
 import { createToken } from "@src/middleware/token";
+import { CustomError } from "@src/middleware/errors";
+import { newHash } from "@src/encryption/hash";
+import { generateOTP } from "@src/middleware/otp";
+import { tempToken } from "@src/middleware/token";
+import { MailArgs } from "@src/mailer/mailer";
 
 export const userRegisterHandler = async (req: Request, res: Response) => {
   const validBody = VUserRegistration.safeParse(req.body);
@@ -22,9 +27,85 @@ export const userRegisterHandler = async (req: Request, res: Response) => {
     return;
   }
 
-  await db.$transaction(async (tx: Prisma.TransactionClient) => {
-    const newRegistration = await tx.registration
-  });
+  const details: MailArgs = {
+    username: "",
+    otp: "",
+    email: "",
+  }
+
+  try {
+    await db.$transaction(async (tx: Prisma.TransactionClient) => {
+      const userExist = await tx.user.findFirst({
+        where: {
+          OR: [
+            {
+              username: validBody.data.username,
+            },
+            {
+              email: validBody.data.email,
+            }
+          ]
+        }
+      });
+      if (userExist) {
+        throw new CustomError(409, "Account already exists with given username or email");
+      }
+
+      const registrationExist = await tx.registration.findFirst({
+        where: {
+          OR: [
+            {
+              username: validBody.data.username,
+            },
+            {
+              email: validBody.data.email,
+            }
+          ],
+          expiryAt: {
+            gt: new Date().toISOString(),
+          }
+        }
+      });
+      if (registrationExist) {
+        throw new CustomError(303, "Redirect to OTP");
+      }
+
+      const creation = new Date();
+      creation.setMinutes(creation.getMinutes() + 5);
+      const newUser = await tx.registration.create({
+        data: {
+          firstName: validBody.data.firstName,
+          lastName: validBody.data.lastName,
+          username: validBody.data.username,
+          email: validBody.data.email,
+          password: newHash(validBody.data.password),
+          otp: generateOTP(),
+          expiryAt: creation.toISOString(),
+        }
+      });
+
+      details.username = newUser.username;
+      details.otp = newUser.otp;
+      details.email = newUser.email;
+
+      res.status(200).json({
+        message: "OTP send to registered email",
+        username: newUser.username,
+        email: newUser.email,
+        tempToken: await tempToken(newUser.email),
+        expiryAt: newUser.expiryAt,
+      });
+      return;
+
+      // TODO: Write down the mailer to send a mail
+
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Interval Server Error"
+    });
+    return;
+  }
 };
 
 export const userLoginHandler = async (req: Request, res: Response) => {
@@ -185,7 +266,7 @@ export const checkBankUsernameHandler = async (req: Request, res: Response) => {
     if (bankExist) {
       res.status(409).json({
         available: false,
-        message: "Username unavailable",
+        message: "Bankname unavailable",
       });
       return;
     }
@@ -210,7 +291,7 @@ export const checkBankUsernameHandler = async (req: Request, res: Response) => {
     // Otherwise username available
     res.status(200).json({
       available: true,
-      message: "Username available"
+      message: "Bankname available"
     })
     return;
   } catch (error) {
