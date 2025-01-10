@@ -31,21 +31,22 @@ model bankRegistration {
 }
 
 model User {
-  id             String           @id @default(cuid())
-  firstName      String
-  lastName       String
-  username       String
-  email          String           @unique
-  password       String?
-  providerId     String           @unique
-  myReferralCode String           @unique
-  wasReferred    String?
-  streak         Int              @default(1)
-  Inventory      Inventory[]
-  Referrals      Referrals[]
-  CouponDispatch CouponDispatch[]
-  FoodDonation   FoodDonation[]
-  Points         Points[]
+  id                String           @id @default(cuid())
+  firstName         String
+  lastName          String
+  username          String
+  email             String           @unique
+  profilePictureURL String
+  password          String?
+  providerId        String           @unique
+  myReferralCode    String           @unique
+  wasReferred       String?
+  streak            Int              @default(1)
+  Inventory         Inventory[]
+  Referrals         Referrals[]
+  CouponDispatch    CouponDispatch[]
+  FoodDonation      FoodDonation[]
+  Points            Points[]
 }
 
 model Referrals {
