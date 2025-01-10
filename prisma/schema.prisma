@@ -124,7 +124,6 @@ model Recipe {
   title       String
   ingredients String[]
   content     String
-  likes       Int      @default(0)
 
   user User @relation(fields: [userId], references: [id])
 }
