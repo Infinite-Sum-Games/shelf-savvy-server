@@ -12,3 +12,119 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Bank {
+  id           String         @id @default(cuid())
+  bankName     String
+  email        String
+  password     String
+  FoodDonation FoodDonation[]
+}
+
+model bankRegistration {
+  id       Int      @id @default(autoincrement())
+  bankName String
+  email    String
+  password String
+  otp      String
+  expiryAt DateTime
+}
+
+model User {
+  id             String           @id @default(cuid())
+  firstName      String
+  lastName       String
+  username       String
+  email          String           @unique
+  password       String?
+  providerId     String           @unique
+  myReferralCode String           @unique
+  wasReferred    String?
+  streak         Int              @default(1)
+  Inventory      Inventory[]
+  Referrals      Referrals[]
+  CouponDispatch CouponDispatch[]
+  FoodDonation   FoodDonation[]
+  Points         Points[]
+}
+
+model Referrals {
+  id           Int    @id @default(autoincrement())
+  joineeId     String
+  referralCode String
+
+  user User @relation(fields: [joineeId], references: [id])
+}
+
+model Achivements {
+  id        Int              @id @default(autoincrement())
+  userId    String
+  badge     AchivementBadges
+  createdAt DateTime
+}
+
+enum AchivementBadges {
+  NewRecruit
+  ThreeDayStreak
+  WeeklyStreak
+  MonthyStreak
+  GenerousGiver
+  CommunityChamp
+  LeaderboardChallenger
+  RecipeMaster
+}
+
+model DiscountCoupon {
+  id             String           @id @default(cuid())
+  title          String
+  validTill      DateTime
+  CouponDispatch CouponDispatch[]
+}
+
+model CouponDispatch {
+  id               Int    @id @default(autoincrement())
+  discountCouponId String
+  userId           String
+
+  discountCoupon DiscountCoupon @relation(fields: [discountCouponId], references: [id])
+  user           User           @relation(fields: [userId], references: [id])
+}
+
+model Inventory {
+  id       Int     @id @default(autoincrement())
+  itemName String
+  barcode  String?
+  qty      Int
+  userId   String
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Recipe {
+  id          Int      @id @default(autoincrement())
+  title       String
+  ingredients String[]
+  content     String
+  likes       Int      @default(0)
+}
+
+model FoodDonation {
+  id             Int     @id @default(autoincrement())
+  senderId       String
+  receiverBankId String
+  content        String
+  approval       Boolean @default(false)
+  receivedFood   Boolean @default(false)
+
+  user User @relation(fields: [senderId], references: [id])
+  bank Bank @relation(fields: [receiverBankId], references: [id])
+}
+
+model Points {
+  id        Int      @id @default(autoincrement())
+  userId    String
+  point     Int
+  createdAt DateTime
+
+  user User @relation(fields: [userId], references: [id])
+}
