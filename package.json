@@ -1,0 +1,35 @@
+{
+  "name": "shelf-savvy-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsx -r tsconfig-paths/register src/app.ts",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon",
+    "seed": "prisma db seed",
+    "studio": "prisma studio",
+    "format": "prettier --write ."
+  },
+  "prisma": {
+    "seed": "tsx src/db/seed.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/helmet": "^4.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "helmet": "^8.0.0",
+    "prisma": "^6.2.1",
+    "tsc": "^2.0.4",
+    "tsconfig-paths": "link:tsconfig-paths",
+    "tsx": "^4.19.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

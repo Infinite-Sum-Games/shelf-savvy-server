@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "strict": true,
+    "rootDir": ".",
+    "outDir": "dist",
+    "baseUrl": ".",
+    "moduleResolution": "node",
+    "paths": {
+      "@src/*": [
+        "src/*"
+      ]
+    },
+    "resolveJsonModule": true,
+    "removeComments": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "exclude": [
+    "node_modules", // Exclude node_modules
+    "**/*.spec.ts", // Exclude specifications
+    "**/*.test.ts" // Exclude test files
+  ],
+  "include": [
+    "src/**/*"
+  ],
+  "tsc-alias": {
+    "resolveFullPaths": true,
+    "verbose": false
+  }
+}
