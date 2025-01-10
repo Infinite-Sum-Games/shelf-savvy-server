@@ -15,8 +15,8 @@ datasource db {
 
 model Bank {
   id           String         @id @default(cuid())
-  bankName     String
-  email        String
+  bankName     String         @unique
+  email        String         @unique
   password     String
   FoodDonation FoodDonation[]
 }
@@ -34,7 +34,7 @@ model User {
   id                String           @id @default(cuid())
   firstName         String
   lastName          String
-  username          String
+  username          String           @unique
   email             String           @unique
   profilePictureURL String?
   password          String?
