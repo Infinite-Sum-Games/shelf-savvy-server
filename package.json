@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "tsx -r tsconfig-paths/register src/app.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsx src/app.ts",
     "dev": "nodemon",
     "seed": "prisma db seed",
     "studio": "prisma studio",
@@ -22,14 +21,16 @@
     "@types/express": "^5.0.0",
     "@types/helmet": "^4.0.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "helmet": "^8.0.0",
+    "paseto": "^3.1.4",
     "prisma": "^6.2.1",
     "tsc": "^2.0.4",
-    "tsconfig-paths": "link:tsconfig-paths",
     "tsx": "^4.19.2"
   },
   "devDependencies": {
+    "tsconfig-paths": "link:tsconfig-paths",
     "typescript": "^5.7.3"
   }
 }

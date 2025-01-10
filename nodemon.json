@@ -9,7 +9,7 @@
     "coverage",
     "dist"
   ],
-  "exec": "tsx -r tsconfig-paths/register ./src/app.ts",
+  "exec": "tsx src/app.ts",
   "env": {
     "NODE_ENV": "dev"
   }
