@@ -42,7 +42,7 @@ model User {
   myReferralCode    String           @unique
   wasReferred       String?
   streak            Int              @default(1)
-  lastCheckIn       DateTime         @default(now())
+  lastCheckIn       DateTime?        @default(now())
   totalPoints       Int              @default(0)
   Inventory         Inventory[]
   Referrals         Referrals[]
