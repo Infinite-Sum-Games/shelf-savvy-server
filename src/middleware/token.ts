@@ -44,8 +44,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
   try {
     const payLoad = await V4.verify(token, publicKey);
     const emailCheck = req.body.email === payLoad["email"];
-    const companyMailCheck = req.body.companyMail === payLoad["email"];
-    if (payLoad["secretKey"] === process.env.TOKEN_SECRET && (emailCheck || companyMailCheck)) {
+    if (payLoad["secretKey"] === process.env.TOKEN_SECRET && (emailCheck)) {
       next();
     } else {
       res.status(403).send({
@@ -54,6 +53,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
       return;
     }
   } catch (err) {
+    console.log(err);
     res.status(403).send({
       message: "FORBIDDEN ACCESS",
     });

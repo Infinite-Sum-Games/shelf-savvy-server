@@ -8,7 +8,7 @@ export const VCreateNewRecipe = z.object({
   email: z.string().trim().max(320).email(),
   title: z.string().trim().min(10).max(120),
   ingredients: z.array(z.string()),
-  content: z.string()
+  content: z.string(),
 });
 
 export const VEditRecipe = z.object({
@@ -16,7 +16,7 @@ export const VEditRecipe = z.object({
   recipeId: z.string().trim().cuid(),
   title: z.string().trim().min(10).max(120),
   ingredients: z.array(z.string()),
-  content: z.string()
+  content: z.string(),
 });
 
 export const VDeleteRecipe = z.object({

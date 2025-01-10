@@ -1,0 +1,11 @@
+meta {
+  name: GetUserInventory
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:8080/api/inventory/user
+  body: json
+  auth: bearer
+}

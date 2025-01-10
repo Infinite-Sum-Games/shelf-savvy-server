@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { VstartDonation } from "@src/types/donation";
 import { PrismaClient } from "@prisma/client";
 import z from "zod";
-import { pointMap } from "@src/config/points"
+import { pointMap } from "@src/config/points";
 
 const prisma = new PrismaClient();
 
@@ -24,17 +24,16 @@ export const StartDonationHandler = async (req: Request, res: Response) => {
       },
     });
     res.status(200).json({
-      createdFoodDonation
+      createdFoodDonation,
     });
     return;
-  }
-  catch (error) {
+  } catch (error) {
     res.status(500).json({
       message: "Internal Server Error",
     });
     return;
   }
-}
+};
 
 export const ApproveDonationHandler = async (req: Request, res: Response) => {
   const id = z.number().positive().safeParse(Number(req.params.donationId));
@@ -53,21 +52,20 @@ export const ApproveDonationHandler = async (req: Request, res: Response) => {
         },
         data: {
           approval: true,
-        }
+        },
       });
       res.status(200).json({
-        approvedDonation
+        approvedDonation,
       });
       return;
     });
-  }
-  catch (error) {
+  } catch (error) {
     res.status(500).json({
       message: "Internal Server Error",
     });
     return;
   }
-}
+};
 
 export const ConfirmDonationHandler = async (req: Request, res: Response) => {
   const id = z.number().positive().safeParse(Number(req.params.donationId));
@@ -81,8 +79,8 @@ export const ConfirmDonationHandler = async (req: Request, res: Response) => {
   const donation = await prisma.foodDonation.findUnique({
     where: {
       id: id.data,
-    }
-  })
+    },
+  });
 
   if (!donation) {
     res.status(404).json({
@@ -114,14 +112,14 @@ export const ConfirmDonationHandler = async (req: Request, res: Response) => {
         },
         data: {
           receivedFood: true,
-        }
+        },
       });
 
       await tx.points.create({
         data: {
           userId: confirmedDonation.senderId,
           point: pointMap.donation[pointvar.data],
-        }
+        },
       });
 
       await tx.user.update({
@@ -131,20 +129,19 @@ export const ConfirmDonationHandler = async (req: Request, res: Response) => {
         data: {
           totalPoints: {
             increment: pointMap.donation[pointvar.data],
-          }
-        }
-      })
+          },
+        },
+      });
       res.status(200).json({
         message: "Donation confirmed",
         id: confirmedDonation.id,
       });
       return;
     });
-  }
-  catch (error) {
+  } catch (error) {
     res.status(500).json({
       message: "Internal Server Error",
     });
     return;
   }
-}
+};

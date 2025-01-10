@@ -9,6 +9,7 @@ import { RecipeRouter } from "./routes/recipe";
 import { ProfileRouter } from "./routes/profile";
 import { PrismaClient } from "@prisma/client";
 import { generateKey } from "./encryption/generate";
+import { InventoryRouter } from "./routes/inventory";
 
 export const db = new PrismaClient();
 
@@ -32,6 +33,7 @@ app.use("/api/referral", ReferralRouter);
 app.use("/api/leaderboard", LeaderboardRouter);
 app.use("/api/recipe", RecipeRouter);
 app.use("/api/profile", ProfileRouter);
+app.use("/api/inventory", InventoryRouter);
 
 app.use("*", (_req: Request, res: Response) => {
   res.status(404).json({

@@ -106,7 +106,7 @@ export const userRegisterHandler = async (req: Request, res: Response) => {
   } catch (error) {
     if (error instanceof CustomError) {
       res.status(error.statusCode).json({
-        messsage: error.message
+        messsage: error.message,
       });
       return;
     }
@@ -182,7 +182,7 @@ export const userRegistrationOTPVerifyHandler = async (req: Request, res: Respon
         },
       });
       if (!verifyOTP) {
-        throw new CustomError(401, "OTP Invalid")
+        throw new CustomError(401, "OTP Invalid");
       }
 
       await tx.registration.deleteMany({
@@ -211,7 +211,7 @@ export const userRegistrationOTPVerifyHandler = async (req: Request, res: Respon
   } catch (error) {
     if (error instanceof CustomError) {
       res.status(error.statusCode).json({
-        message: error.message
+        message: error.message,
       });
       return;
     }
@@ -246,10 +246,10 @@ export const bankRegisterHandler = async (req: Request, res: Response) => {
               bankName: validBody.data.bankname,
             },
             {
-              email: validBody.data.email
-            }
-          ]
-        }
+              email: validBody.data.email,
+            },
+          ],
+        },
       });
       if (bankExist) {
         throw new CustomError(409, "Account already exists");
@@ -259,13 +259,13 @@ export const bankRegisterHandler = async (req: Request, res: Response) => {
         where: {
           OR: [
             {
-              bankName: validBody.data.bankname
+              bankName: validBody.data.bankname,
             },
             {
-              email: validBody.data.email
-            }
-          ]
-        }
+              email: validBody.data.email,
+            },
+          ],
+        },
       });
       if (registrationExist) {
         throw new CustomError(303, "Redirect to OTP");
@@ -303,16 +303,15 @@ export const bankRegisterHandler = async (req: Request, res: Response) => {
       return;
     });
     return;
-
   } catch (error) {
     if (error instanceof CustomError) {
       res.status(error.statusCode).json({
-        message: error.message
+        message: error.message,
       });
       return;
     }
     res.status(500).json({
-      message: "Internal Server Error"
+      message: "Internal Server Error",
     });
     return;
   }
@@ -368,9 +367,7 @@ export const bankRegistrationOTPHandler = async (req: Request, res: Response) =>
   try {
     await db.$transaction(async (tx: Prisma.TransactionClient) => {
       const verifyOTP = await tx.bankRegistration.findFirst({
-        where: {
-
-        }
+        where: {},
       });
       if (!verifyOTP) {
         throw new CustomError(401, "OTP Invalid");
@@ -379,7 +376,7 @@ export const bankRegistrationOTPHandler = async (req: Request, res: Response) =>
       await tx.bankRegistration.deleteMany({
         where: {
           bankName: validBody.data.bankname,
-        }
+        },
       });
 
       await tx.bank.create({
@@ -387,23 +384,23 @@ export const bankRegistrationOTPHandler = async (req: Request, res: Response) =>
           bankName: validBody.data.bankname,
           email: verifyOTP.email,
           password: verifyOTP.password,
-        }
+        },
       });
 
       res.status(200).json({
-        message: "Registration successful"
+        message: "Registration successful",
       });
     });
     return;
   } catch (error) {
     if (error instanceof CustomError) {
       res.status(error.statusCode).json({
-        message: error.message
+        message: error.message,
       });
       return;
     }
     res.status(500).json({
-      message: "Internal Server Error"
+      message: "Internal Server Error",
     });
     return;
   }
