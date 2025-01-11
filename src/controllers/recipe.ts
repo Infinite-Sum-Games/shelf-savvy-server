@@ -1,8 +1,32 @@
 import { db } from "@src/app";
-import { VCreateNewRecipe, VDeleteRecipe, VEditRecipe } from "@src/types/recipe";
+import { VCreateNewRecipe, VDeleteRecipe, VEditRecipe, VGetAllRecipe } from "@src/types/recipe";
 import { Request, Response } from "express";
 import { Prisma } from "@prisma/client";
 import { CustomError } from "@src/middleware/errors";
+
+export const GetAllRecipeHandler = async (req: Request, res: Response) => {
+  const validBody = VGetAllRecipe.safeParse(req.body);
+  if (!validBody.success) {
+    res.status(400).json({
+      message: "Bad Request",
+    });
+    return;
+  }
+
+  try {
+    const getRecipes = await db.recipe.findMany();
+    res.status(200).json({
+      message: "Recipes found",
+      recipe: getRecipes,
+    });
+    return;
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
+    return;
+  }
+};
 
 export const CreateNewRecipeHandler = async (req: Request, res: Response) => {
   const validBody = VCreateNewRecipe.safeParse(req.body);
@@ -36,7 +60,7 @@ export const CreateNewRecipeHandler = async (req: Request, res: Response) => {
         },
       });
       if (!newRecipe) {
-        throw new CustomError(500, "Could not create new recipe")
+        throw new CustomError(500, "Could not create new recipe");
       }
 
       res.status(200).json({
@@ -50,12 +74,12 @@ export const CreateNewRecipeHandler = async (req: Request, res: Response) => {
   } catch (error) {
     if (error instanceof CustomError) {
       res.status(error.statusCode).json({
-        message: error.message
+        message: error.message,
       });
       return;
     }
     res.status(500).json({
-      message: "Internal Server Error"
+      message: "Internal Server Error",
     });
   }
 };
@@ -80,16 +104,14 @@ export const EditRecipeHandler = async (req: Request, res: Response) => {
       data: {
         title: validBody.data.title,
         ingredients: validBody.data.ingredients,
-        content: validBody.data.content
-      }
+        content: validBody.data.content,
+      },
     });
     if (!editRecipe) {
       throw new CustomError(500, "Internal Server Error");
     }
 
-    res.status(200).json({
-
-    });
+    res.status(200).json({});
     return;
   } catch (error) {
     if (error instanceof CustomError) {
@@ -134,7 +156,7 @@ export const DeleteRecipeHandler = async (req: Request, res: Response) => {
     });
 
     res.status(200).json({
-      message: "Successfully deleted item"
+      message: "Successfully deleted item",
     });
     return;
   } catch (error) {

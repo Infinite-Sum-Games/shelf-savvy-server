@@ -18,6 +18,7 @@ export const GetUserInventory = async (req: Request, res: Response) => {
         email: validBody.data.email,
       },
       select: {
+        id: true,
         itemName: true,
         qty: true,
       },

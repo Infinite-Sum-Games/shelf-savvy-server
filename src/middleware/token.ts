@@ -44,7 +44,7 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
   try {
     const payLoad = await V4.verify(token, publicKey);
     const emailCheck = req.body.email === payLoad["email"];
-    if (payLoad["secretKey"] === process.env.TOKEN_SECRET && (emailCheck)) {
+    if (payLoad["secretKey"] === process.env.TOKEN_SECRET && emailCheck) {
       next();
     } else {
       res.status(403).send({
