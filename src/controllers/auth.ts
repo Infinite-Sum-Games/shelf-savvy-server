@@ -358,25 +358,34 @@ export const bankLoginHandler = async (req: Request, res: Response) => {
 export const bankRegistrationOTPHandler = async (req: Request, res: Response) => {
   const validBody = VBankRegistrationOTP.safeParse(req.body);
   if (!validBody.success) {
-    res.status(400).json({
-      message: "Bad Request",
-    });
+    res.status(400).json({ message: "Bad Request" });
     return;
   }
 
   try {
     await db.$transaction(async (tx: Prisma.TransactionClient) => {
       const verifyOTP = await tx.bankRegistration.findFirst({
-        where: {},
+        where: {
+          bankName: validBody.data.bankname,
+          otp: validBody.data.otp,
+          expiryAt: { gt: new Date().toISOString() },
+        },
       });
       if (!verifyOTP) {
         throw new CustomError(401, "OTP Invalid");
       }
 
+      // Check for existing bank account
+      const existingBank = await tx.bank.findFirst({
+        where: { email: verifyOTP.email },
+      });
+      if (existingBank) {
+        throw new CustomError(409, "Account with this email already exists.");
+      }
+
+      // Proceed with registration
       await tx.bankRegistration.deleteMany({
-        where: {
-          bankName: validBody.data.bankname,
-        },
+        where: { bankName: validBody.data.bankname },
       });
 
       await tx.bank.create({
@@ -387,24 +396,20 @@ export const bankRegistrationOTPHandler = async (req: Request, res: Response) =>
         },
       });
 
-      res.status(200).json({
-        message: "Registration successful",
-      });
+      res.status(200).json({ message: "Registration successful" });
     });
     return;
   } catch (error) {
+    console.log(error);
     if (error instanceof CustomError) {
-      res.status(error.statusCode).json({
-        message: error.message,
-      });
+      res.status(error.statusCode).json({ message: error.message });
       return;
     }
-    res.status(500).json({
-      message: "Internal Server Error",
-    });
+    res.status(500).json({ message: "Internal Server Error" });
     return;
   }
 };
+
 
 export const checkUsernameHandler = async (req: Request, res: Response) => {
   const validBody = VCheckUsername.safeParse(req.body);

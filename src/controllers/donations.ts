@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { VstartDonation } from "@src/types/donation";
-import { PrismaClient } from "@prisma/client";
 import z from "zod";
 import { pointMap } from "@src/config/points";
+import { db } from "@src/app";
 
-const prisma = new PrismaClient();
+
 
 export const StartDonationHandler = async (req: Request, res: Response) => {
   const VfoodDonation = VstartDonation.safeParse(req.body);
@@ -16,7 +16,7 @@ export const StartDonationHandler = async (req: Request, res: Response) => {
   }
 
   try {
-    const createdFoodDonation = await prisma.foodDonation.create({
+    const createdFoodDonation = await db.foodDonation.create({
       data: {
         senderId: VfoodDonation.data.senderId,
         receiverBankId: VfoodDonation.data.receiverId,
@@ -45,7 +45,7 @@ export const ApproveDonationHandler = async (req: Request, res: Response) => {
   }
 
   try {
-    await prisma.$transaction(async (tx) => {
+    await db.$transaction(async (tx) => {
       const approvedDonation = await tx.foodDonation.update({
         where: {
           id: id.data,
@@ -67,6 +67,36 @@ export const ApproveDonationHandler = async (req: Request, res: Response) => {
   }
 };
 
+export const RejectDonationHandler = async (req: Request, res: Response) => {
+  const id = z.number().positive().safeParse(Number(req.params.donationId));
+  if (!id.success) {
+    res.status(400).json({
+      message: "Invalid donation id",
+    });
+    return;
+  }
+
+  try {
+    await db.$transaction(async (tx) => {
+      const approvedDonation = await tx.foodDonation.delete({
+        where: {
+          id: id.data,
+        },
+      });
+      res.status(200).json({
+        approvedDonation,
+      });
+      return;
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
+    return;
+  }
+};
+
+
 export const ConfirmDonationHandler = async (req: Request, res: Response) => {
   const id = z.number().positive().safeParse(Number(req.params.donationId));
   if (!id.success) {
@@ -76,7 +106,7 @@ export const ConfirmDonationHandler = async (req: Request, res: Response) => {
     return;
   }
 
-  const donation = await prisma.foodDonation.findUnique({
+  const donation = await db.foodDonation.findUnique({
     where: {
       id: id.data,
     },
@@ -105,7 +135,7 @@ export const ConfirmDonationHandler = async (req: Request, res: Response) => {
   }
 
   try {
-    await prisma.$transaction(async (tx) => {
+    await db.$transaction(async (tx) => {
       const confirmedDonation = await tx.foodDonation.update({
         where: {
           id: id.data,
