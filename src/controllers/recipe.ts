@@ -73,9 +73,24 @@ export const EditRecipeHandler = async (req: Request, res: Response) => {
   }
 
   try {
-    await db.$transaction(async (tx: Prisma.TransactionClient) => {
+    const editRecipe = await db.recipe.update({
+      where: {
+        id: validBody.data.id,
+      },
+      data: {
+        title: validBody.data.title,
+        ingredients: validBody.data.ingredients,
+        content: validBody.data.content
+      }
+    });
+    if (!editRecipe) {
+      throw new CustomError(500, "Internal Server Error");
+    }
 
-    })
+    res.status(200).json({
+
+    });
+    return;
   } catch (error) {
     if (error instanceof CustomError) {
       res.status(error.statusCode).json({

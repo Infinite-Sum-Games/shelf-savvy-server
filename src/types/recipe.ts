@@ -13,7 +13,7 @@ export const VCreateNewRecipe = z.object({
 
 export const VEditRecipe = z.object({
   email: z.string().trim().max(320).email(),
-  recipeId: z.string().trim().cuid(),
+  id: z.string().trim().cuid(),
   title: z.string().trim().min(10).max(120),
   ingredients: z.array(z.string()),
   content: z.string(),
