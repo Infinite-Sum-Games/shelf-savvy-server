@@ -98,14 +98,14 @@ async function inventorySeed() {
   const inventory: {
     itemName: string;
     qty: number;
-    userId: string;
+    email: string;
   }[] = [];
 
   for (const user of createdUsers) {
     inventory.push({
       itemName: faker.commerce.productName(),
       qty: faker.number.int({ min: 0, max: 100 }),
-      userId: user.id,
+      email: user.email,
     });
   }
 
@@ -122,7 +122,6 @@ async function recipeSeed() {
     title: string;
     ingredients: string[];
     content: string;
-    likes: number;
   }[] = [];
 
   for (const user of createdUsers) {
@@ -136,7 +135,6 @@ async function recipeSeed() {
         faker.commerce.productName(),
       ],
       content: faker.lorem.paragraph(),
-      likes: faker.number.int({ min: 0, max: 100 }),
     });
   }
 
